@@ -22,10 +22,28 @@ public static class Driver
             testClock[i].Minutes = ValidateMinutes();
         }
 
-        Console.WriteLine("\nnow printing all clocks\n");
-        for (int i = 0; i < testClock.Length; i++)  //for loop to cycle all clocks
+        Console.WriteLine("\nnow printing clocks\n");
+        for (int i = 0; i < 4; i++)  //for loop to cycle all clocks
             Console.WriteLine("testClock[{0}] = {1}", i, testClock[i]);
 
+        //assign values to testclock 4 and 5, test addition operator
+        testClock[4] = testClock[0] + testClock[1];
+        testClock[5] = testClock[2] + testClock[3];
+
+        for (int i = 4; i < 6; i++)
+            Console.WriteLine("testClock[{0}] = {1}", i, testClock[i]);
+
+        //compare values
+        Console.WriteLine("\n");
+        if (testClock[0] > testClock[1])
+            Console.WriteLine("testClock 0 is larger than testClock 1");
+        if (testClock[0] < testClock[1])
+            Console.WriteLine("testClock 0 is smaller than testClock 1");
+        if (testClock[2] > testClock[3])
+            Console.WriteLine("testClock 2 is larger than testClock 3");
+        if (testClock[2] < testClock[3])
+            Console.WriteLine("testClock 2 is smaller than testClock 3");
+        
 
         Console.Read(); //hold console window
     }
