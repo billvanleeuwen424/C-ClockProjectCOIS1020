@@ -144,31 +144,147 @@ public class Clock
             }
         }
     }
-    /*
+
+    
     // ToString method
     public override string ToString()
     {
-        //return;    //!!!!!CHANGE WHEN POSSIBLE,,, PLACEHOLDER!!!!
+        if (clockType == 'M')   //if military
+        {
+            return(hours.ToString("D2") + minutes.ToString("D2") + "hrs");
+        }
+
+        //else the clock is standard.
+        return (hours.ToString() + ':' + minutes.ToString("D2") + clockType.ToString() + 'M');
     }
+    
 
     // Overloaded Operator Addition method
     public static Clock operator+(Clock clk1, Clock clk2)
     {
-        //return;    //!!!!!CHANGE WHEN POSSIBLE,,, PLACEHOLDER!!!!
+        bool clk1Convert = false, clk2Convert = false;  //booleans to keep track of conversion
+        Clock clk3 = new Clock(0, 0, 'M');  //Create a blank military clock to act as a vessel for clk1 & 2 values
+
+        //these ifs keep track if clk1 or 2 need to be converted to military, so that they can be converted back later
+        if (clk1.clockType != 'M')
+        {
+            clk1Convert = true;
+        }
+        if (clk2.clockType != 'M')
+        {
+            clk2Convert = true;
+        }
+
+        //converts clocks to military, the way that the method is created, wont change anything if clock is already military
+        clk1.ConvertToMilitary();
+        clk2.ConvertToMilitary();
+
+        //populates clck3 values
+        clk3.minutes = (clk1.Minutes + clk2.Minutes);
+        clk3.hours = (clk1.Hours + clk2.Hours);
+
+        //works out the overfilled minutes and hours.
+        if (clk3.minutes >= 60) //if the minutes are larger than 60, rounds one into hours, and removes 60
+        {
+            clk3.hours++;
+            clk3.minutes -= 60;
+        }
+        if (clk3.hours >= 24)   //if hours are larger than 24, rounds out the 24 hours, signifies a day passing into the next
+            clk3.hours -= 24;
+
+        //if the original two clocks were converted, c
+        if (clk1Convert)
+            clk1.ConvertToStandard();
+        if (clk2Convert)
+            clk2.ConvertToStandard();
+
+
+        return clk3;
     }
 
     // Greater Than operator
     public static bool operator>(Clock clk1, Clock clk2)
     {
-        return true;    //!!!!!CHANGE WHEN POSSIBLE,,, PLACEHOLDER!!!!
+
+        // if both clocks are standard
+        if ((clk1.clockType == 'P' || clk1.clockType == 'A') && (clk2.clockType == 'P' || clk2.clockType == 'A'))   //if both clocks are standard
+        {
+            
+            if(clk1.clockType == 'A')
+                if(clk2.clockType == 'A')
+                {
+                    if(clk1.hours > clk2.hours)
+                        return true;
+
+                    if(clk1.hours == clk2.hours)
+                        if (clk1.minutes > clk2.minutes)
+                            return true;
+                }
+
+
+            if (clk1.clockType == 'P')
+            {
+                if (clk2.clockType == 'A')
+                    return true;
+
+                if (clk1.hours > clk2.hours)
+                    return true;
+
+                if (clk1.hours > clk2.hours)
+                    return true;
+
+                if (clk1.hours == clk2.hours)
+                    if (clk1.minutes > clk2.minutes)
+                        return true;
+            }
+        }
+        
+        //if both clocks are military/only one is military
+        if (clk1.clockType == 'M' || clk2.clockType == 'M')
+        {
+            bool clk1Convert = false, clk2Convert = false;  //booleans to keep track if one of the clocks was non military
+            if (clk1.clockType != 'M')
+            {
+                clk1Convert = true;
+            }
+            if (clk2.clockType != 'M')
+            {
+                clk2Convert = true;
+            }
+
+            //converts clocks to military, the way that the method is created, wont change anything if clock is already military
+            clk1.ConvertToMilitary();
+            clk2.ConvertToMilitary();
+
+            //formats hours/minutes into military. eg, 01 hours and 23 minutes = 0123, eg 23 hours 59 minutes = 2359. 0123 < 2359
+            //holding them in new values in order to compare, and convert back before returning
+            int clock1Time = ((clk1.hours * 100) + clk1.minutes);
+            int clock2Time = ((clk2.hours * 100) + clk2.minutes);
+
+            //if the original two clocks were converted, covert back
+            if (clk1Convert)
+                clk1.ConvertToStandard();
+            if (clk2Convert)
+                clk2.ConvertToStandard();
+
+            if (clock1Time > clock2Time)
+                return true;
+        }
+        
+        //if we make it here, all tests have been done, clk1 is not > clk2
+        return false; 
     }
 
     // Less Than operator
     public static bool operator<(Clock clk1, Clock clk2)
     {
-        return true;    //!!!!!CHANGE WHEN POSSIBLE,,, PLACEHOLDER!!!!
+        //just passes the variables in reverse to the > method
+        if (clk2 > clk1)
+            return true;
+
+        return false;
     }
-     */
+     
 }
 
     
