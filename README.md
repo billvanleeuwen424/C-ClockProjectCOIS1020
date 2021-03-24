@@ -1,5 +1,4 @@
 # C-ClockProjectCOIS1020
-This is my assignment 5 for COIS 1020.
-The objective was to show knowledge of objects, classes, and ways to manipulate them.
+In our first programming class at TrentU Computer Science, we learn the fundamentals of Object Oriented Programming. This project is one desiged to showcase the student's understanding of classes, objects, methods, arrays, and all other skills learned earlier in the course.
 
-I would have done this project a bit differently, however we were given guidelines on how to set it up.
+The task is to create a program in which clock objects can be created, modified, and compared. This involved overloading operators, overloading built in methods, and creating logic to add clock objects together. 
