@@ -109,9 +109,17 @@ public class Clock
         {
             if (clockType == 'P')
             {
-                totalHour = 12;
-                totalHour += hours;
-                hours = totalHour;
+                if (hours == 12)
+                    totalHour = 12;
+                
+                else    //if the clock is anything but 12pm, military time is equal to 12 + the current hour. e.g. if time = 1:15pm, military hours will be 12 + 1, 1315hrs
+                {
+                    totalHour = 12;
+                    totalHour += hours;
+                    hours = totalHour;
+                }
+                
+                
             }
             else    //when the clock is am
                 if (hours == 12)    //if the clock is am, and the hours are 12, in military time that is 00
@@ -285,6 +293,7 @@ public class Clock
         return false;
     }
      
-}
+}
+
 
     

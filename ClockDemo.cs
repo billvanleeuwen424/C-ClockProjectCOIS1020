@@ -39,6 +39,8 @@ public static class Driver
             Console.WriteLine("testClock 0 is larger than testClock 1");
         if (testClock[0] < testClock[1])
             Console.WriteLine("testClock 0 is smaller than testClock 1");
+
+
         if (testClock[2] > testClock[3])
             Console.WriteLine("testClock 2 is larger than testClock 3");
         if (testClock[2] < testClock[3])
@@ -47,6 +49,9 @@ public static class Driver
 
         Console.Read(); //hold console window
     }
+
+
+
 
     public static char UserInput()
     {
