@@ -105,50 +105,63 @@ public class Clock
         int totalHour = 0;  //value to hold hours while converting
 
         // if the clocktype is already military, nothing will happen
-        if (clockType != 'M')
+        if (ClockType != 'M')
         {
-            if (clockType == 'P')
+            if (ClockType == 'P')
             {
-                if (hours == 12)
+                ClockType = 'M';
+                if (Hours == 12)
                     totalHour = 12;
                 
                 else    //if the clock is anything but 12pm, military time is equal to 12 + the current hour. e.g. if time = 1:15pm, military hours will be 12 + 1, 1315hrs
                 {
                     totalHour = 12;
-                    totalHour += hours;
-                    hours = totalHour;
+                    totalHour += Hours;
+                    Hours = totalHour;
                 }
                 
                 
             }
             else    //when the clock is am
-                if (hours == 12)    //if the clock is am, and the hours are 12, in military time that is 00
-                    hours = 0;
+            {
+                ClockType = 'M';
+                if (Hours == 12)    //if the clock is am, and the hours are 12, in military time that is 00
+                    Hours = 0;
                 else    //otherwise can just convert hours to hours
-                    totalHour = hours;
+                    totalHour = Hours; 
+            }
                 
         }
-        //after hours are changed, clocktype is switched to m
-        clockType = 'M';
-
     }
 
     //ConvertToStandard method
     //depending on the hours, the clocktype, and hours will be changed into standard format. Since the minutes are in the same format, those do not need to be touched
     private void ConvertToStandard()
     {
+        int totalHours = Hours;
         //will only work if clocktype is military
-        if (clockType == 'M')
+        if (ClockType == 'M')
         {
-            if (hours >= 12) //if the military time is > 1200 hrs, then it is no longer possible to be AM 
+            if (Hours > 12) //if the military time is > 1200 hrs, then it is no longer possible to be AM 
             {
                 clockType = 'P';
-                hours -= 12;    //take away 12 hours, add the remainder to the hours after setting to pm
+                totalHours -= 12;
+                Hours = totalHours;    //take away 12 hours, add the remainder to the hours after setting to pm
+            }
+            else if (Hours == 12)
+            {
+                clockType = 'P';
+                Hours = totalHours;
+            }
+            else if (Hours == 0)
+            {
+                Hours = 12; //military 00 = 12am
             }
             else   //if the military time is < 1159, then it is not possible to be PM
             {
-                clockType = 'A';
-                //hours can stay the same
+                ClockType = 'A';
+                Hours = Hours;
+                //hours can stay the same. I have it like this (hours = hours) so that the program can catch any errors if they happen
             }
         }
     }
@@ -157,28 +170,31 @@ public class Clock
     // ToString method
     public override string ToString()
     {
-        if (clockType == 'M')   //if military
+        if (ClockType == 'M')   //if military
         {
-            return(hours.ToString("D2") + minutes.ToString("D2") + "hrs");
+            return(Hours.ToString("D2") + Minutes.ToString("D2") + "hrs");
         }
 
         //else the clock is standard.
-        return (hours.ToString() + ':' + minutes.ToString("D2") + clockType.ToString() + 'M');
+        return (Hours.ToString() + ':' + Minutes.ToString("D2") + ClockType.ToString() + 'M');
     }
     
 
     // Overloaded Operator Addition method
     public static Clock operator+(Clock clk1, Clock clk2)
     {
+        int tempMinutes = 0;
+        int tempHours = 0;
+        
         bool clk1Convert = false, clk2Convert = false;  //booleans to keep track of conversion
         Clock clk3 = new Clock(0, 0, 'M');  //Create a blank military clock to act as a vessel for clk1 & 2 values
 
         //these ifs keep track if clk1 or 2 need to be converted to military, so that they can be converted back later
-        if (clk1.clockType != 'M')
+        if (clk1.ClockType != 'M')
         {
             clk1Convert = true;
         }
-        if (clk2.clockType != 'M')
+        if (clk2.ClockType != 'M')
         {
             clk2Convert = true;
         }
@@ -188,17 +204,17 @@ public class Clock
         clk2.ConvertToMilitary();
 
         //populates clck3 values
-        clk3.minutes = (clk1.Minutes + clk2.Minutes);
-        clk3.hours = (clk1.Hours + clk2.Hours);
+        tempMinutes = (clk1.Minutes + clk2.Minutes);
+        tempHours = (clk1.Hours + clk2.Hours);
 
         //works out the overfilled minutes and hours.
-        if (clk3.minutes >= 60) //if the minutes are larger than 60, rounds one into hours, and removes 60
+        if (tempMinutes >= 60) //if the minutes are larger than 60, rounds one into hours, and removes 60
         {
-            clk3.hours++;
-            clk3.minutes -= 60;
+            tempHours++;
+            tempMinutes -= 60;
         }
-        if (clk3.hours >= 24)   //if hours are larger than 24, rounds out the 24 hours, signifies a day passing into the next
-            clk3.hours -= 24;
+        if (tempHours >= 24)   //if hours are larger than 24, rounds out the 24 hours, signifies a day passing into the next
+            tempHours -= 24;
 
         //if the original two clocks were converted, c
         if (clk1Convert)
@@ -206,6 +222,8 @@ public class Clock
         if (clk2Convert)
             clk2.ConvertToStandard();
 
+        clk3.Hours = tempHours;
+        clk3.Minutes = tempMinutes;
 
         return clk3;
     }
@@ -215,47 +233,47 @@ public class Clock
     {
 
         // if both clocks are standard
-        if ((clk1.clockType == 'P' || clk1.clockType == 'A') && (clk2.clockType == 'P' || clk2.clockType == 'A'))   //if both clocks are standard
+        if ((clk1.ClockType == 'P' || clk1.ClockType == 'A') && (clk2.ClockType == 'P' || clk2.ClockType == 'A'))   //if both clocks are standard
         {
             
-            if(clk1.clockType == 'A')
-                if(clk2.clockType == 'A')
+            if(clk1.ClockType == 'A')
+                if(clk2.ClockType == 'A')
                 {
-                    if(clk1.hours > clk2.hours)
+                    if(clk1.Hours > clk2.Hours)
                         return true;
 
-                    if(clk1.hours == clk2.hours)
-                        if (clk1.minutes > clk2.minutes)
+                    if(clk1.Hours == clk2.Hours)
+                        if (clk1.Minutes > clk2.Minutes)
                             return true;
                 }
 
 
-            if (clk1.clockType == 'P')
+            if (clk1.ClockType == 'P')
             {
-                if (clk2.clockType == 'A')
+                if (clk2.ClockType == 'A')
                     return true;
 
-                if (clk1.hours > clk2.hours)
+                if (clk1.Hours > clk2.Hours)
                     return true;
 
-                if (clk1.hours > clk2.hours)
+                if (clk1.Hours > clk2.Hours)
                     return true;
 
-                if (clk1.hours == clk2.hours)
-                    if (clk1.minutes > clk2.minutes)
+                if (clk1.Hours == clk2.Hours)
+                    if (clk1.Minutes > clk2.Minutes)
                         return true;
             }
         }
         
         //if both clocks are military/only one is military
-        if (clk1.clockType == 'M' || clk2.clockType == 'M')
+        if (clk1.ClockType == 'M' || clk2.ClockType == 'M')
         {
             bool clk1Convert = false, clk2Convert = false;  //booleans to keep track if one of the clocks was non military
-            if (clk1.clockType != 'M')
+            if (clk1.ClockType != 'M')
             {
                 clk1Convert = true;
             }
-            if (clk2.clockType != 'M')
+            if (clk2.ClockType != 'M')
             {
                 clk2Convert = true;
             }
@@ -266,8 +284,8 @@ public class Clock
 
             //formats hours/minutes into military. eg, 01 hours and 23 minutes = 0123, eg 23 hours 59 minutes = 2359. 0123 < 2359
             //holding them in new values in order to compare, and convert back before returning
-            int clock1Time = ((clk1.hours * 100) + clk1.minutes);
-            int clock2Time = ((clk2.hours * 100) + clk2.minutes);
+            int clock1Time = ((clk1.Hours * 100) + clk1.Minutes);
+            int clock2Time = ((clk2.Hours * 100) + clk2.Minutes);
 
             //if the original two clocks were converted, covert back
             if (clk1Convert)
