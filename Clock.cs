@@ -1,5 +1,22 @@
-﻿using System;
+﻿//William Van Leeuwen
 
+//Assignment 5
+//COIS 1020
+using System;
+
+
+//Description
+/*
+ * This class holds the properties and attributes of a regular old clock
+ * 
+ * has the instance variables of hours, minutes, and clockType
+ * 
+ * has a no parameter constructor, and a three parameter constructor
+ * 
+ * all variables can be modified through the properties, with restrictions to keep the time proper
+ * 
+ * 
+ */
 public class Clock
 {
     private int hours;
@@ -7,6 +24,9 @@ public class Clock
     private char clockType;
 
     // No Parameter Constructor
+    //hours, int
+    //minutes, int
+    //Clocktype, char, A for am, P for pm, and M for Military time
     public Clock()
     {
         //set default. 12:00AM
@@ -16,6 +36,9 @@ public class Clock
     }
 
     // Three Parameter Constructor
+    //hours, int
+    //minutes, int
+    //Clocktype, char, A for am, P for pm, and M for Military time
     public Clock(int hrs, int mins, char cType)
     {
         ClockType = cType;
@@ -25,6 +48,8 @@ public class Clock
     }
 
     // Hours Property
+    //Description: if military time, min 1 hr max 23hrs, if standard, min 1 max 12 hours
+    //: returns validated hours
     public int Hours
     {
         get 
@@ -168,6 +193,7 @@ public class Clock
 
     
     // ToString method
+    //over rides the ToString in order to print a proper format of a clock
     public override string ToString()
     {
         if (ClockType == 'M')   //if military
@@ -181,6 +207,14 @@ public class Clock
     
 
     // Overloaded Operator Addition method
+    //this method works by creating a new clock object, and adding the sum of the two together into it. 
+    //to accomplish this, both of the clocks that will be added are converted into military, they are converted back after
+    //Parameters
+        //two clock objects
+    //variables
+        //int temp minutes, holds the minutes of both clocks to do some validation before adding them to the new clock
+        //int hours, same as minutes, but hours
+        //bool clk1 and clk2convert, used in an if statement to check if the clocks need to be converted
     public static Clock operator+(Clock clk1, Clock clk2)
     {
         int tempMinutes = 0;
@@ -229,6 +263,12 @@ public class Clock
     }
 
     // Greater Than operator
+    //works by checking for all possible instances where clk1 could be larger than clk2, if else, returns false
+    //if one is military while the other is not, will convert
+    //Parameters
+        //2 clock objects
+    //variables
+        //bool clock1 and clock2convert, see if they need to be converted to military and back
     public static bool operator>(Clock clk1, Clock clk2)
     {
 
@@ -236,6 +276,7 @@ public class Clock
         if ((clk1.ClockType == 'P' || clk1.ClockType == 'A') && (clk2.ClockType == 'P' || clk2.ClockType == 'A'))   //if both clocks are standard
         {
             
+            //this block : if both clocks are AM
             if(clk1.ClockType == 'A')
                 if(clk2.ClockType == 'A')
                 {
@@ -248,11 +289,14 @@ public class Clock
                 }
 
 
+
+            //this block: if clock one is PM
             if (clk1.ClockType == 'P')
             {
                 if (clk2.ClockType == 'A')
                     return true;
 
+                //past here implies clock two is PM also
                 if (clk1.Hours > clk2.Hours)
                     return true;
 
@@ -265,7 +309,8 @@ public class Clock
             }
         }
         
-        //if both clocks are military/only one is military
+
+        //if both clocks are military or if only one is military
         if (clk1.ClockType == 'M' || clk2.ClockType == 'M')
         {
             bool clk1Convert = false, clk2Convert = false;  //booleans to keep track if one of the clocks was non military

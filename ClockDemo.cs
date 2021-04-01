@@ -1,4 +1,8 @@
-﻿using System;
+﻿//William Van Leeuwen
+
+//Assignment 5
+//COIS 1020
+using System;
 
 public static class Driver
 {
@@ -17,7 +21,7 @@ public static class Driver
             
             //construct object to default, assign values as user inputs using proper methods
             testClock[i] = new Clock();
-            testClock[i].ClockType = UserInput();
+            testClock[i].ClockType = ValidateClockType();
             testClock[i].Hours = ValidateHours(testClock[i].ClockType);
             testClock[i].Minutes = ValidateMinutes();
         }
@@ -52,8 +56,14 @@ public static class Driver
 
 
 
-
-    public static char UserInput()
+    //this method validates the clocktype info entered
+    //void method, user enters info while in this method
+    //uses a boolean to hold in the do-while loop
+    //once the loop is left, it is safe to assume that the clocktype the user entered is valid
+    //it will then return the validated clocktype
+    //char type, the clocktype that will be entered by the user
+    
+    public static char ValidateClockType()
     {
         char type = ' ';
         bool leaveLoop = false;
@@ -65,7 +75,7 @@ public static class Driver
 
             type = Char.ToUpper(Convert.ToChar(Console.ReadLine()));
 
-            switch (type)
+            switch (type)   //switch to select the three clock types
             {
                 case 'A':
                     leaveLoop = true;
@@ -86,6 +96,10 @@ public static class Driver
 
     }
 
+    //this method validates the hours entered by the user. Very similar to the clocktype validation method
+    //validates user entered hours depending on the clocktype passed.
+    //int hours, user entered hours
+    //bool leaveloop, self explanitory, will become true once input is valid
     public static int ValidateHours(char clockType)
     {
         bool leaveLoop = false;
@@ -111,6 +125,10 @@ public static class Driver
         return hours;
     }
 
+    //this method validates the minutes entered by the user. Very similar to the clocktype validation method
+    //validates user entered minutes
+    //int minutes, user entered minutes
+    //bool leaveloop, self explanitory, will become true once input is valid
     public static int ValidateMinutes()
     {
         bool leaveLoop = false;
