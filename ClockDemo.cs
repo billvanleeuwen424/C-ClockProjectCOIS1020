@@ -1,5 +1,5 @@
 ﻿//William Van Leeuwen
-
+//0697505
 //Assignment 5
 //COIS 1020
 using System;
@@ -72,24 +72,38 @@ public static class Driver
         {
             Console.WriteLine("Valid clock types are 'A' for AM, 'P' for PM, and 'M' for military time");
             Console.Write("Enter the clock type: ");
-
-            type = Char.ToUpper(Convert.ToChar(Console.ReadLine()));
-
-            switch (type)   //switch to select the three clock types
+            try
             {
-                case 'A':
-                    leaveLoop = true;
-                    break;
-                case 'P':
-                    leaveLoop = true;
-                    break;
-                case 'M':
-                    leaveLoop = true;
-                    break;
-                default:    //invalid entry
-                    Console.WriteLine("Invalid Entry. Try Again.");
-                    break;
+
+                type = Char.ToUpper(Convert.ToChar(Console.ReadLine()));
+
+                switch (type)   //switch to select the three clock types
+                {
+                    case 'A':
+                        leaveLoop = true;
+                        break;
+                    case 'P':
+                        leaveLoop = true;
+                        break;
+                    case 'M':
+                        leaveLoop = true;
+                        break;
+                    default:    //invalid entry
+                        Console.WriteLine("Invalid Entry. Try Again.");
+                        break;
+                }
+
             }
+
+            catch (FormatException e)
+            {
+                Console.WriteLine("Invalid Entry. Try Again");
+            }
+            catch (StackOverflowException e)
+            {
+                Console.WriteLine("Invalid Entry, try again");
+            }
+
         } while (!leaveLoop);  //only leaves after input is validated
 
         return type;
@@ -110,15 +124,24 @@ public static class Driver
             Console.WriteLine("Military time is between 0 and 23, standard time is between 1 and 12");
             Console.Write("Enter the hours: ");
 
-            hours = Convert.ToInt32(Console.ReadLine());
+            try
+            {
+
+                hours = Convert.ToInt32(Console.ReadLine());
 
 
-            if (clockType == 'M' && hours < 24 && hours >= 0) //checks if input is valid military time
-                leaveLoop = true;
-            else if (clockType != 'M' && hours <= 12 && hours > 0)  //checks if input is valid standard time
-                leaveLoop = true;
-            else
+                if (clockType == 'M' && hours < 24 && hours >= 0) //checks if input is valid military time
+                    leaveLoop = true;
+                else if (clockType != 'M' && hours <= 12 && hours > 0)  //checks if input is valid standard time
+                    leaveLoop = true;
+                else
+                    Console.WriteLine("Invalid Entry, try again");
+            }
+            catch (FormatException e)
+            {
                 Console.WriteLine("Invalid Entry, try again");
+            }
+            
 
         } while (!leaveLoop);   //only leaves after input is validated
 
@@ -136,16 +159,29 @@ public static class Driver
 
         do
         {
-            Console.WriteLine("Regular clock rules apply");
-            Console.WriteLine("Between 0 and 59");
-            Console.Write("Enter the minutes: ");
+            try
+            {
 
-            minutes = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Regular clock rules apply");
+                Console.WriteLine("Between 0 and 59");
+                Console.Write("Enter the minutes: ");
 
-            if (minutes < 60 && minutes >= 0)   //checks if minutes are 0 - 60
-                leaveLoop = true;
-            else
+                minutes = Convert.ToInt32(Console.ReadLine());
+
+                if (minutes < 60 && minutes >= 0)   //checks if minutes are 0 - 60
+                    leaveLoop = true;
+                else
+                    Console.WriteLine("Invalid Entry, try again");
+            }
+            catch (FormatException e)
+            {
                 Console.WriteLine("Invalid Entry, try again");
+            }
+            catch (StackOverflowException e)
+            {
+                Console.WriteLine("Invalid Entry, try again");
+            }
+
 
         } while (!leaveLoop);   //only leaves after input is validated
 

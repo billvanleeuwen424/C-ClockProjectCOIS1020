@@ -1,5 +1,5 @@
 ﻿//William Van Leeuwen
-
+//0697505
 //Assignment 5
 //COIS 1020
 using System;
@@ -59,25 +59,39 @@ public class Clock
 
         set
         {
-            if (ClockType == 'M')
+            try
             {
-                if (value <= 23 && value >= 0)  //checks if hours are valid 0 - 23 for military
-                    hours = value;
+
+                if (ClockType == 'M')
+                {
+                    if (value <= 23 && value >= 0)  //checks if hours are valid 0 - 23 for military
+                        hours = value;
+                    else
+                    {
+                        hours = 0;
+                        Console.WriteLine("invalid time entered... Hours set to 00");
+                    }
+                }
                 else
                 {
-                    hours = 0;
-                    Console.WriteLine("invalid time entered... Hours set to 00");
+                    if (value <= 12 && value > 0)   //checks if hours are valid 1 - 12 for standard time
+                        hours = value;
+                    else
+                    {
+                        hours = 12;
+                        Console.WriteLine("invalid time entered... Hours set to 12");
+                    }
                 }
             }
-            else
+            catch (FormatException e)
             {
-                if (value <= 12 && value > 0)   //checks if hours are valid 1 - 12 for standard time
-                    hours = value;
-                else
-                {
-                    hours = 12;
-                    Console.WriteLine("invalid time entered... Hours set to 12");
-                }
+                hours = 12;
+                Console.WriteLine("invalid time entered... Hours set to 12");
+            }
+            catch (StackOverflowException e)
+            {
+                hours = 12;
+                Console.WriteLine("invalid time entered... Hours set to 12");
             }
         }
     }
@@ -92,9 +106,23 @@ public class Clock
 
         set
         {
-            if (value < 59 && value >= 0)   //checks if mintues are valid. 0-59
-                minutes = value;
-            else
+            try
+            {
+
+                if (value < 59 && value >= 0)   //checks if mintues are valid. 0-59
+                    minutes = value;
+                else
+                {
+                    minutes = 0;
+                    Console.WriteLine("invalid time entered... Minutes set to 00");
+                }
+            }
+            catch (FormatException e)
+            {
+                minutes = 0;
+                Console.WriteLine("invalid time entered... Minutes set to 00");
+            }
+            catch (StackOverflowException e)
             {
                 minutes = 0;
                 Console.WriteLine("invalid time entered... Minutes set to 00");
@@ -113,9 +141,18 @@ public class Clock
 
         set //checks if value is correct, else sets type to AM
         {
-            if (value == 'A' || value == 'P' || value == 'M')
-                clockType = value;
-            else
+            try
+            {
+
+                if (value == 'A' || value == 'P' || value == 'M')
+                    clockType = value;
+                else
+                {
+                    clockType = 'A';
+                    Console.WriteLine("invalid time entered... Clocktype set to AM");
+                }
+            }
+            catch (FormatException e)
             {
                 clockType = 'A';
                 Console.WriteLine("invalid time entered... Clocktype set to AM");
