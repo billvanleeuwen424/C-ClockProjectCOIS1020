@@ -141,6 +141,14 @@ public static class Driver
             {
                 Console.WriteLine("Invalid Entry, try again");
             }
+            catch (StackOverflowException e)
+            {
+                Console.WriteLine("Invalid Entry, try again");
+            }
+            catch (OverflowException e)
+            {
+                Console.WriteLine("Invalid Entry, try again");
+            }
             
 
         } while (!leaveLoop);   //only leaves after input is validated
@@ -178,6 +186,10 @@ public static class Driver
                 Console.WriteLine("Invalid Entry, try again");
             }
             catch (StackOverflowException e)
+            {
+                Console.WriteLine("Invalid Entry, try again");
+            }
+            catch (OverflowException e)
             {
                 Console.WriteLine("Invalid Entry, try again");
             }
